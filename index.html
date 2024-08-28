@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Full-Screen Scrapbook</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100%;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .scrapbook {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #faf0e6;
+            transition: transform 0.5s ease;
+            overflow: auto;
+        }
+        .scrapbook h2 {
+            margin-top: 0;
+            font-family: 'Georgia', serif;
+            color: #8b4513;
+            font-size: 2.5em;
+            text-align: center;
+        }
+        .scrapbook p {
+            font-size: 1.5em;
+            line-height: 1.6;
+            text-align: center;
+            max-width: 80%;
+        }
+        .scrapbook img {
+            max-width: 70%;
+            max-height: 30%;
+            border: 2px solid #8b4513;
+            margin-top: 20px;
+        }
+        .nav-button {
+            position: absolute;
+            bottom: 20px;
+            padding: 10px 20px;
+            background-color: #8b4513;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
+        .nav-button:hover {
+            background-color: #5a3311;
+        }
+        #page1 { background-color: #f5f5dc; }
+        #page2 { background-color: #f3ddef; }
+        #page3 { background-color: #ffe4c4; }
+
+         /* Add this to your existing style block */
+
+        .music-visualizer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            height: 50px;
+            width: 100px;
+            margin-top: 20px;
+        }
+
+        .bar {
+            width: 10px;
+            height: 10px;
+            margin: 0 5px;
+            background-color: #8b4513;
+            animation: bounce 1s infinite ease-in-out;
+            animation-play-state: paused;
+        }
+
+        .bar:nth-child(1) { animation-delay: 0s; }
+        .bar:nth-child(2) { animation-delay: 0.2s; }
+        .bar:nth-child(3) { animation-delay: 0.4s; }
+        .bar:nth-child(4) { animation-delay: 0.6s; }
+        .bar:nth-child(5) { animation-delay: 0.8s; }
+
+        @keyframes bounce {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(2); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page 1 -->
+    <div class="scrapbook" id="page1">
+        <h2>Hello my love, it's our monthsary!!!</h2>
+        <p></p>
+        <img src="image2.jpg" alt="Beginning Image">
+        <button class="nav-button" onclick="goToPage('page2')">Next Page</button>
+    </div>
+
+    <!-- Page 2 with Music -->
+    <div class="scrapbook" id="page2" style="display: none;">
+        <h2></h2>
+        <p>As we continue to grow, together, we will create a love that endures beyond time, a love that will remain until our final breath.</p>
+        <img src="image22.jpeg" alt="Adventure Image">
+        <audio id="pageMusic1" src="music1.mp3" preload="auto"></audio>
+         <!-- Visual Indicator -->
+            <div id="music-visualizer" class="music-visualizer">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
+        <button class="nav-button" onclick="goToPage('page3')">Next Page</button>
+    </div>
+
+    <!-- Page 3 -->
+    <div class="scrapbook" id="page3" style="display: none;">
+        <audio id="pageMusic2" src="music2.mp3" preload="auto"></audio>
+        <!-- <h2>I love you <3 </h2> -->
+        <p style="font-size: 15px;"> 
+            In your world, I find a quiet peace,
+
+            A joy that comes from just being near you.
+
+            You hold me close, as if I'm something rare,
+
+            But the truth is, it’s your light that guides me.
+            
+            You look to the stars with gratitude,
+
+            Yet it’s me who feels the gift of your presence.
+
+            In the simplicity of our moments,
+
+            I know I am and will always be the lucky one.</p>
+        <!-- <img src="https://via.placeholder.com/800x400" alt="Memories Image"> -->
+        <button class="nav-button" onclick="goToPage('page4')">Next Page</button>
+    </div>
+
+    <!-- Page 4 -->
+    <div class="scrapbook" id="page4" style="display: none;">
+        <h2>Happy Monthsary, My Love <3 </h2>   
+        <img src="lucky.jpeg" alt="Memories Image">
+        <p>Ikaw, palagi.</p>
+        <button class="nav-button" onclick="goToPage('page1')">Back to First Page</button>
+    </div>
+
+    <script>
+        function goToPage(pageId) {
+            // Stop the music if playing
+            const music1 = document.getElementById('pageMusic1');
+            const music2 = document.getElementById('pageMusic2');
+            const visualizerBars = document.querySelectorAll('.bar');
+            if (music1 && music2) {
+                music1.pause();
+                music1.currentTime = 0;
+                music2.pause();
+                music2.currentTime = 0;
+                visualizerBars.forEach(bar => bar.style.animationPlayState = 'paused');
+            }
+
+            // Hide all pages
+            document.querySelectorAll('.scrapbook').forEach(page => page.style.display = 'none');
+            // Show the selected page
+            document.getElementById(pageId).style.display = 'flex';
+
+            // Play music if on page 2
+            if (pageId === 'page2' && music1) {
+                music1.volume = 0.2;
+                music1.play();
+                visualizerBars.forEach(bar => bar.style.animationPlayState = 'running');
+            }
+             // Play music if on page 2
+             if (pageId === 'page3' && music2) {
+                music2.volume = 0.2;
+                music2.play();
+                visualizerBars.forEach(bar => bar.style.animationPlayState = 'running');
+            }
+        }
+    </script>
+</body>
+</html>
